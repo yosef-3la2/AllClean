@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'admin'])->only(['create','store']);
+        $this->middleware(['auth', 'admin'])->only(['create','store','allusers','lock','delete']);
     }
 
     public function myprofile(){
@@ -29,17 +29,28 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:50',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|string',
+            'password' => 'required|string',
+            'address' => ['required', 'string', 'min:8'],
+            'phone' => ['required','regex:/^\+?[0-9\s\-\(\)]+$/','min:10','max:20'],
+            'role' =>['required','in:admin,user,vendor']
         ]);
 
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        
+        $user->role = $request->role;
+        $user->address = $request->address;
+        $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
-        $user->is_admin = $request->has('is_admin') ? 1 : 0;
         $user->save();
 
         return redirect()->route('user.create')->with('success', 'User created successfully.');
+    }
+    
+    public function allusers(){
+        $users=User::all();
+        return view('users.allusers',compact('users'));
     }
 
     public function edit()
@@ -54,12 +65,17 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:50',
             'email' => 'required|email|unique:users,email,' . Auth::id(),
-            'image' => "nullable|mimes:jpg,png,jpeg|max:$img_size"
+            'image' => "nullable|mimes:jpg,png,jpeg|max:$img_size",
+            'address' => ['required', 'string', 'min:8'],
+            'phone' => ['required','regex:/^\+?[0-9\s\-\(\)]+$/','min:10','max:20'],
+            
         ]);
 
         $user = Auth::user();
         $user->name = $request->name;
-        $user->email = $request->email  ;
+        $user->email = $request->email;
+        $user->address = $request->address;
+        $user->phone = $request->phone;
         
         if ($request->hasFile('image')) {
             $image_data=$request->file('image');
@@ -81,4 +97,21 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('user.edit')->with('success', 'Your data has been updated successfully.');
     }
+
+    public function delete($id){
+        $user=User::FindorFail($id);
+        $user->delete();
+        return redirect()->back()->with('deleted','Account Deleted successfully');
+    }
+
+
+
+
+    public function lock($id){
+        $user = User::findOrFail($id);
+        $user->is_locked = !$user->is_locked;      
+        $user->save();
+        return redirect()->back()->with('status', $user->is_locked ? 'Account locked.' : 'Account unlocked.');
+    }
+
 }

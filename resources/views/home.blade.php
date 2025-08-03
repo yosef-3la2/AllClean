@@ -13,14 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @if(Auth::user()->is_admin)
-                    <div>
-                        <a href="{{route('user.create')}}" class="btn btn-primary">Add Users</a>
-                    </div>
-                    @endif
                     {{ __('You are logged in!') }}
                 </div>
             </div>
+            <br>
+            @if(Auth::user()->role=='admin')
+            <div>
+                <a href="{{route('user.create')}}" class="btn btn-primary">Add Users</a>
+            </div>
+            @endif
         </div>
     </div>
 </div>

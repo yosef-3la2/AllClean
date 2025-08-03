@@ -48,6 +48,36 @@
                             </div>
                         </div>
 
+                        
+
+                       {{-- Address --}}
+                        <div class="row mb-3">
+                            <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
+                            <div class="col-md-6">
+                                <input id="address" type="text" 
+                                    class="form-control @error('address') is-invalid @enderror" 
+                                    name="address" value="{{ old('address', $user->address) }}" required>
+                                @error('address')
+                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Phone --}}
+                        <div class="row mb-3">
+                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('Phone') }}</label>
+                            <div class="col-md-6">
+                                <input id="phone" type="text" 
+                                    class="form-control @error('phone') is-invalid @enderror" 
+                                    name="phone" value="{{ old('phone', $user->phone) }}" required>
+                                @error('phone')
+                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        
                         {{-- Image Upload --}}
                         <div class="row mb-3">
                             <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Profile Image') }}</label>

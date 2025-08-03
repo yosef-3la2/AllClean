@@ -6,7 +6,7 @@
         
         <div class="card-body p-4">
             
-                    <img src="{{ asset('assets/userimage/' . $user->image) }}" class="rounded-circle mb-3 mx-auto d-block" alt="Instructor Image" style="width: 120px; height: 120px; object-fit: cover;">
+            <img src="{{ asset('assets/userimage/' . $user->image) }}" class="rounded-circle mb-3 mx-auto d-block" alt="Instructor Image" style="width: 120px; height: 120px; object-fit: cover;">
                 
             <h3 class="card-title text-primary fw-bold mb-3 text-center">
                 {{ $user->name }}
@@ -17,6 +17,19 @@
                 <li class="list-group-item d-flex justify-content-between">
                     <strong>Email:</strong>
                     <span>{{ $user->email }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Phone:</strong>
+                    <span>{{ $user->phone }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Address:</strong>
+                    <span>{{ $user->address }}</span>
+                </li>
+                
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>User Type:</strong>
+                    <span>{{ $user->role }}</span>
                 </li>
             
             </ul>
